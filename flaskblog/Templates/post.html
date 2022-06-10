@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+{% block content %}
+<!-- for loop begins -->
+    
+    <br>
+    <br>
+    <div class="card">
+      
+        <div class="card-header">
+          <img  class="rounded-circle article-img"src="{{url_for('static',filename='profilepics/'+post.author.image_file)}}" alt="">
+           <h2 class="article-title">{{post.title}}</h2> 
+          </div>
+        <div class="card-body">
+      
+          <p class="card-text">{{post.content}} on {{post.date_posted.strftime('%Y-%m-%d')}}</p>
+          {% if post.author==current_user %}
+          <a href="{{url_for('posts.update_post',post_id=post.id)}}" class="btn btn-primary btn-sm m-1 ">update</a>
+          <button href="#" class="btn btn-danger btn-sm m-1" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
+          {% endif %}
+          <a href="#" class="" style="text-decoration:none;"><i>Created by {{post.author.username}}</i></a>
+        </div>
+      </div>
+ <br>
+ <div class="modal fade" id="deleteModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteModalLabel">Delete Post?</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <form action="{{url_for('posts.delete_post',post_id=post.id)}}" method="POST">
+          <input class="btn btn-danger"type="submit" value="Delete">
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}    

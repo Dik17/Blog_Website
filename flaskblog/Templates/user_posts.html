@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<h1 class="mb-3 ">Post by {{user.username}} ({{posts.total}})</h1>
+<!-- for loop begins -->
+    {% for post in posts.items%}
+    <br>
+    <br>
+
+    <div class="card">
+      
+        <div class="card-header">
+          <img  class="rounded-circle article-img"src="{{url_for('static',filename='profilepics/'+post.author.image_file)}}" alt="">
+          </div>
+        <div class="card-body">
+      
+          <p class="card-text">{{post.content}} on {{post.date_posted.strftime('%Y-%m-%d')}}</p>
+            
+           <h2> <a  href="{{url_for('posts.post',post_id=post.id)}}" class=" article-title btn btn-primary">{{post.title}} </a></h2>
+           <h2> <a class="mr-2" href="{{url_for('posts.user_posts',username=post.author.username)}}" class=" article-title btn btn-primary"> {{post.author.username}}</a></h2>
+        </div>
+      </div>
+ <br>
+    {% endfor %}
+    {% for page_num in posts.iter_pages(left_edge=1,right_edge=1,left_current=1,right_current=2) %}
+      {% if page_num %}
+        {% if posts.page==page_num %}
+          <a class="btn btn-info mb-4"href="{{url_for('posts.user_posts',username=user.username,page=page_num)}}">{{page_num}}</a>
+        {%else%}
+        <a class="btn btn-outline-info mb-4"href="{{url_for('posts.user_posts',username=user.username,page=page_num)}}">{{page_num}}</a>
+        {%endif%}
+      {%else%}
+        ...
+      {% endif %}
+    {% endfor %}
+{% endblock content %}   
